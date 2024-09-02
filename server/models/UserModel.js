@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema({
         type:Boolean,
         default:false,
     },
+    skills:{
+        type:[String],
+        required:false,
+    }
 });
 
 userSchema.pre("save",async function(next) {

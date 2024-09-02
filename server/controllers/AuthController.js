@@ -54,16 +54,15 @@ export const login = async(request,response,next) => {
             sameSite: "None",
         });
         return response.status(200).json({
-            user:{
-                id:user.id,
-                email:user.email,
-                profileSetup:user.profileSetup,
-                firstName:user.firstName,
-                lastName:user.lastName,
-                image:user.image,
-                color:user.color,
-            },
-        });
+            id:userData.id,
+            email:userData.email,
+            profileSetup:userData.profileSetup,
+            firstName:userData.firstName,
+            lastName:userData.lastName,
+            image:userData.image,
+            color:userData.color,
+            skills:userData.skills,
+    });
     }catch(error){
         console.log({error});
         return response.status(500).json({error:"Internal Server error"});
@@ -77,6 +76,35 @@ export const getUserInfo = async(request,response,next) => {
             return response.status(404).json({error:"User not found"});
         }
         return response.status(200).json({
+            id:userData.id,
+            email:userData.email,
+            profileSetup:userData.profileSetup,
+            firstName:userData.firstName,
+            lastName:userData.lastName,
+            image:userData.image,
+            color:userData.color,
+            skills:userData.skills,
+    });
+    }catch(error){
+        console.log({error});
+        return response.status(500).json({error:"Internal Server error"});
+    }
+};
+
+export const updateProfile = async(request,response,next) => {
+    try{
+        const {userId} = request;
+        const {firstName,lastName,skills,color} = request.body;
+        const skillsArray = Array.isArray(skills) ? skills : [skills];
+        if(!firstName || !lastName || !skills){
+            return response.status(400).send("All fields are required");
+        }
+
+        const userData = await User.findByIdAndUpdate(userId,{
+            firstName,lastName,skills,color,profileSetup:true
+        },{new:true,runValidators:true});
+
+        return response.status(200).json({
                 id:userData.id,
                 email:userData.email,
                 profileSetup:userData.profileSetup,
@@ -84,6 +112,7 @@ export const getUserInfo = async(request,response,next) => {
                 lastName:userData.lastName,
                 image:userData.image,
                 color:userData.color,
+                skills:userData.skills,
         });
     }catch(error){
         console.log({error});
