@@ -95,13 +95,14 @@ export const updateProfile = async(request,response,next) => {
     try{
         const {userId} = request;
         const {firstName,lastName,skills,color} = request.body;
-        const skillsArray = Array.isArray(skills) ? skills : [skills];
+        // const skillsArray = Array.isArray(skills) ? skills : [skills];
+            const skillsArray = skills ? skills.split(',') : skills;
         if(!firstName || !lastName || !skills){
             return response.status(400).send("All fields are required");
         }
 
         const userData = await User.findByIdAndUpdate(userId,{
-            firstName,lastName,skills,color,profileSetup:true
+            firstName,lastName,skills: skillsArray,color,profileSetup:true
         },{new:true,runValidators:true});
 
         return response.status(200).json({
