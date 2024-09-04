@@ -47,9 +47,9 @@ const Auth = () => {
     const handleLogin = async() => {
         if(validateLogin()){
             const response = await apiClient.post(LOGIN_ROUTE,{email,password},{withCredentials:true});
-            if(response.data.user.id){
-                setUserInfo(response.data.user)
-                if(response.data.user.profileSetup){
+            if(response){
+                setUserInfo(response.data)
+                if(response.data.profileSetup){
                     navigate('/chat');
                 }else{
                     navigate('/profile')

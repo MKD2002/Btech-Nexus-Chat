@@ -54,14 +54,14 @@ export const login = async(request,response,next) => {
             sameSite: "None",
         });
         return response.status(200).json({
-            id:userData.id,
-            email:userData.email,
-            profileSetup:userData.profileSetup,
-            firstName:userData.firstName,
-            lastName:userData.lastName,
-            image:userData.image,
-            color:userData.color,
-            skills:userData.skills,
+            id:user.id,
+            email:user.email,
+            profileSetup:user.profileSetup,
+            firstName:user.firstName,
+            lastName:user.lastName,
+            image:user.image,
+            color:user.color,
+            skills:user.skills,
     });
     }catch(error){
         console.log({error});
