@@ -55,7 +55,6 @@ const Auth = () => {
                     navigate('/profile')
                 }
             }
-            console.log({response});
         }
     }
 
