@@ -79,8 +79,7 @@ const Profile = () => {
 
     const handleImageChange = async(event) => {
         const file = event.target.files[0]
-        // console.log({file});
-        if(file){
+            if(file){
             const formData = new FormData();
             formData.append("profile-image",file)
             const response = await apiClient.post(ADD_PROFILE_IMAGE_ROUTE,formData,{withCredentials:true});
@@ -88,11 +87,6 @@ const Profile = () => {
                 setUserInfo({...userInfo, image:response.data.image})
                 toast.success("Image Uploaded Successfully")
             }
-            // const reader = new FileReader()
-            // reader.onload = () => {
-            //     setImage(reader.result)
-            // }
-            // reader.readAsDataURL(file)
         }
     }
 

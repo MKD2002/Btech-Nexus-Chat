@@ -102,7 +102,7 @@ export const updateProfile = async(request,response,next) => {
         }
 
         const userData = await User.findByIdAndUpdate(userId,{
-            firstName,lastName,skills: skillsArray,color,profileSetup:true
+            firstName,lastName,skills: skillsArray,color,image,profileSetup:true
         },{new:true,runValidators:true});
 
         return response.status(200).json({
@@ -127,7 +127,7 @@ export const addProfileImage = async(request,response,next) => {
             return response.status(400).send("File is Required")
         }
 
-        const date =Date.now();
+        const date = Date.now();
         let fileName = "uploads/profiles/" + date + request.file.originalname
         renameSync(request.file.path,fileName)
 
