@@ -4,6 +4,10 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import authRoutes from './routes/AuthRoutes.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+
 
 dotenv.config();
 const app = express();
@@ -18,8 +22,33 @@ app.use(cors({
 app.use("/uploads/profiles",express.static("/uploads/profiles"))
 app.use(cookieParser());
 app.use(express.json());
+// app.get("/uploads/profiles/:pathname",(request,response) => {
+//     // console.log("request");
+//     // response.sendFile(`${__dirname}/uploads/profiles/${request.params.pathname}`);
+//     response.sendFile(path.join("/uploads/profiles",request.params.pathname));
+// });
+// Manually define __dirname in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
+// Route to serve profile images
+app.get("/uploads/profiles/:pathname", (request, response) => {
+    const filename = request.params.pathname;
+    const directoryPath = path.join(__dirname, 'uploads', 'profiles');
 
+    // Full path to the requested file
+    const filePath = path.join(directoryPath, filename);
+
+    // Check if the file exists
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+        if (err) {
+            return response.status(404).send("File not found");
+        }
+
+        // Serve the file
+        response.sendFile(filePath);
+    });
+});
 app.use("/api/auth",authRoutes);
 
 const server = app.listen(PORT, () => {
