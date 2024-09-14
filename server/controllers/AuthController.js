@@ -102,7 +102,7 @@ export const updateProfile = async(request,response,next) => {
         }
 
         const userData = await User.findByIdAndUpdate(userId,{
-            firstName,lastName,skills: skillsArray,color,image,profileSetup:true
+            firstName,lastName,skills: skillsArray,color,profileSetup:true
         },{new:true,runValidators:true});
 
         return response.status(200).json({

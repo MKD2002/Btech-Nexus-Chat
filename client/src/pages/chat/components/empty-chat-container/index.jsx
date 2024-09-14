@@ -11,7 +11,7 @@ const EmptyChatContainer = () => {
          />
          <div className='flex flex-col items-center gap-5 mt-10 text-3xl text-center text-white transition-all duration-300 text-opacity-80 lg:text-4xl'>
             <h3 className='poppins-medium'>
-                Hi<span className='text-purple-500'>!</span>Welcome to
+                Hi<span className='text-purple-500'>! </span>Welcome to
                 <span className='text-purple-500'> Btech-Nexus</span> Chat <span className='text-purple-500'>.</span>
             </h3>
          </div>
