@@ -7,6 +7,7 @@ import authRoutes from './routes/AuthRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import contactsRoutes from './routes/ContactRoutes.js';
 
 
 dotenv.config();
@@ -22,12 +23,6 @@ app.use(cors({
 app.use("/uploads/profiles",express.static("/uploads/profiles"))
 app.use(cookieParser());
 app.use(express.json());
-// app.get("/uploads/profiles/:pathname",(request,response) => {
-//     // console.log("request");
-//     // response.sendFile(`${__dirname}/uploads/profiles/${request.params.pathname}`);
-//     response.sendFile(path.join("/uploads/profiles",request.params.pathname));
-// });
-// Manually define __dirname in ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -49,7 +44,9 @@ app.get("/uploads/profiles/:pathname", (request, response) => {
         response.sendFile(filePath);
     });
 });
+
 app.use("/api/auth",authRoutes);
+app.use("/api/contacts",contactsRoutes);
 
 const server = app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
