@@ -16,7 +16,7 @@ import { useAppStore } from "@/store"
 const NewDM = () => {
     const [openNewContactModal, setOpenNewContactModal] = useState(false);
     const [searchedContacts, setSearchedContacts] = useState([]);
-    const {setSelectedChatType,setSelectedChatData} = useAppStore
+    const {setSelectedChatType,setSelectedChatData} = useAppStore();
 
     const searchContacts = async(searchTerm) => {
         try{
@@ -73,6 +73,8 @@ const NewDM = () => {
                     onChange={(e)=>searchContacts(e.target.value)}
                 />
               </div>
+              {
+                searchedContacts.length > 0 &&
               <ScrollArea className="h-[250px]">
                 <div className="flex flex-col gap-5">
                     {
@@ -114,9 +116,10 @@ const NewDM = () => {
                     ))}
                 </div>
               </ScrollArea>
+              }
               {
                 searchedContacts.length<=0 && (
-                    <div className="flex-1 md:bg-[#181920] md:flex flex-col justify-center items-center duration-1000 transition-all mt-5">
+                    <div className="flex-1 md:bg-[#181920] md:flex flex-col justify-center items-center duration-1000 transition-all ">
                         <Lottie
                             isClickToPauseDisabled={true}
                             height={100}
