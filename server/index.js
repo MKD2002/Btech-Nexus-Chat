@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import contactsRoutes from './routes/ContactRoutes.js';
 import setupSocket from './socket.js';
+import messagesRoutes from './routes/MessagesRoute.js';
 
 
 dotenv.config();
@@ -48,6 +49,7 @@ app.get("/uploads/profiles/:pathname", (request, response) => {
 
 app.use("/api/auth",authRoutes);
 app.use("/api/contacts",contactsRoutes);
+app.use('/api/messages',messagesRoutes);
 
 const server = app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
