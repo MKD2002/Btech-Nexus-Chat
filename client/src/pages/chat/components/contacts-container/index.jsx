@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import NewDM from "./components/new-dm";
 import ProfileInfo from "./components/profile-info";
 import { apiClient } from "@/lib/api-client";
-import { GET_DM_CONTACTS_ROUTES } from "@/utils/constants";
+import { GET_DM_CONTACTS_ROUTE } from "@/utils/constants";
 import { useAppStore} from "@/store";
 import ContactList from "@/components/contact-list";
 
@@ -13,7 +13,7 @@ const ContactsContainer = () => {
 
     useEffect(()=>{
         const getContacts = async () =>{
-            const response = await apiClient.get(GET_DM_CONTACTS_ROUTES,{withCredentials:true})
+            const response = await apiClient.get(GET_DM_CONTACTS_ROUTE,{withCredentials:true})
             if(response.data.contacts){
                 setDirectMessagesContacts(response.data.contacts);
             }
