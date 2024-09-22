@@ -1,16 +1,19 @@
 import { useAppStore } from '@/store'
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {apiClient} from '@/lib/api-client'
 import moment from 'moment';
 import { GET_ALL_MESSAGES_ROUTE } from '@/utils/constants';
 import { HOST } from '@/utils/constants';
 import { MdFolderZip} from 'react-icons/md'
 import { IoMdArrowRoundDown } from 'react-icons/io'
-
+import { IoCloseSharp } from 'react-icons/io5'
 
 const MessageContainer = () => {
     const scrollRef = useRef();
     const {selectedChatType,selectedChatData,userInfo,selectedChatMessages ,setSelectedChatMessages} = useAppStore();
+
+    const [showImage, setShowImage] = useState(false)
+    const [imageUrl, setImageUrl] = useState(null)
 
     useEffect(()=>{
         const  getMessages = async() => {
@@ -63,8 +66,16 @@ const MessageContainer = () => {
         })
     }
 
-    const downloadFile = (file) => {
-
+    const downloadFile = async(url) => {
+        const response = await apiClient.get(`${HOST}/${url}`,{responseType:"blob"})
+        const urlBlob = window.URL.createObjectURL(new Blob([response.data]))
+        const link = document.createElement('a')
+        link.href = urlBlob;
+        link.setAttribute('download',url.split('/').pop())
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+        window.URL.revokeObjectURL(urlBlob)
     }
 
     const renderDMMessages = (message) =>(
@@ -79,7 +90,13 @@ const MessageContainer = () => {
                     message.messageType === "file" && (
                         <div className={`${message.sender !== selectedChatData._id ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50" :"bg-[#2a2b33]/5 text-white/80 border-[#fff]/20"} border inline-block p-4 rounded my-1 max-w-[50%] break-words`}>
                             {checkIfImage(message.fileUrl) ? (
-                                <div className='cursor-pointer'>
+                                <div
+                                    className='cursor-pointer'
+                                    onClick={() => {
+                                        setShowImage(true)
+                                        setImageUrl(message.fileUrl)
+                                    }}
+                                >
                                     <img src={`${HOST}/${message.fileUrl}`} height={300} width={300}/>
                                 </div>
                             ) :(
@@ -109,6 +126,35 @@ const MessageContainer = () => {
     <div className="flex-1 p-4 px-8 overflow-y-auto scrollbar-hidden md:w-[65vw] lg:w-[70vw] xl:w-[80vw] w-full">
         {renderMessages()}
         <div ref={scrollRef} />
+        {
+            showImage && (
+                <div className='fixed z-[1000] top-0 left-0 h-[100vh] w-[100vw] flex items-center justify-center backdrop-blur-lg flex-col'>
+                    <div>
+                        <img
+                            src={`${HOST}/${imageUrl}`}
+                            className='h-[80vh] w-full bg-cover'
+                        />
+                    </div>
+                    <div className='fixed top-0 flex gap-5 mt-5'>
+                        <button
+                            className='p-3 text-2xl transition-all duration-300 rounded-full cursor-pointer bg-black/20 hover:bg-black/50'
+                            onClick={()=>downloadFile(imageUrl)}
+                        >
+                            <IoMdArrowRoundDown />
+                        </button>
+                        <button
+                            className='p-3 text-2xl transition-all duration-300 rounded-full cursor-pointer bg-black/20 hover:bg-black/50'
+                            onClick={()=>{
+                                setShowImage(false)
+                                setImageUrl(null)
+                            }}
+                        >
+                            <IoCloseSharp />
+                        </button>
+                    </div>
+                </div>
+            )
+        }
     </div>
   )
 }
