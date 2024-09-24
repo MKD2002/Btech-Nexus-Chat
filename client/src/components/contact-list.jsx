@@ -6,17 +6,17 @@ import { getColor } from '@/lib/utils';
 const contactList = ({contacts,isChannel = false}) => {
 
     const {selectedChatData, selectedChatType , setSelectedChatData , setSelectedChatType,setSelectedChatMessages } = useAppStore();
-
+    
     const handleClick = (contact) =>{
         if(isChannel) setSelectedChatType('channel')
         else setSelectedChatType('contact')
         setSelectedChatData(contact)
 
-        if(selectedChatData && selectedChatData._id === contact._id){
-            setSelectedChatMessages([])
-        }
+        // if(selectedChatData && selectedChatData._id === contact._id){
+        //     setSelectedChatMessages([])
+        // }
     }
-
+    
     return (
         <div className='mt-5'>
             {
