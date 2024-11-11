@@ -108,7 +108,7 @@ const MessageContainer = () => {
                                         setImageUrl(message.fileUrl)
                                     }}
                                 >
-                                    <img src={`${HOST}/${message.fileUrl}`} height={300} width={300}/>
+                                    <img src={`${message.fileUrl}`} height={300} width={300}/>
                                 </div>
                             ) :(
                                 <div className='flex items-center justify-center gap-5'>
@@ -142,7 +142,7 @@ const MessageContainer = () => {
                 <div className='fixed z-[1000] top-0 left-0 h-[100vh] w-[100vw] flex items-center justify-center backdrop-blur-lg flex-col'>
                     <div>
                         <img
-                            src={`${HOST}/${imageUrl}`}
+                            src={`${imageUrl}`}
                             className='h-[80vh] w-full bg-cover'
                         />
                     </div>

@@ -8,6 +8,7 @@ import { useAppStore } from "@/store";
 import { useSocket } from "@/context/SocketContext";
 import { apiClient } from "@/lib/api-client";
 import { UPLOAD_FILE_ROUTE } from "@/utils/constants";
+import { ImageUpload } from "@/cloud";
 
 const MessageBar = () => {
     const emojiRef = useRef();
@@ -55,6 +56,8 @@ const MessageBar = () => {
     const handleAttachmentChange = async(event) => {
         try{
             const file = event.target.files[0];
+            const imageUploadLink = await ImageUpload(event.target.files);
+            console.log(imageUploadLink)
             if(file){
                 const formData = new FormData();
                 formData.append("file",file);
@@ -66,6 +69,8 @@ const MessageBar = () => {
                     }
                     });
 
+                    console.log(response)
+
                 if(response.status=== 200 && response.data){
                     setIsUploading(false);
                     if(selectedChatType === 'contact'){
@@ -74,7 +79,7 @@ const MessageBar = () => {
                         content:undefined,
                         recipient:selectedChatData._id,
                         messageType:"file",
-                        fileUrl: response.data.filePath,
+                        fileUrl: imageUploadLink[0],
                         })
                     }
                 }
